@@ -1,0 +1,83 @@
+#!/usr/bin/ksh
+
+if [ $# -gt 0 ] 
+then
+  # Create the directory .Kuka in ~
+  KUKA="$HOME/.Kuka"
+  ORIGINS="$KUKA/.ORIGINS"
+  if [ ! -d $KUKA ]
+  then
+    mkdir $KUKA
+  fi
+
+  if [ ! -d $ORIGINS ]
+  then
+    mkdir $ORIGINS
+  fi
+
+  FLAG="$1"
+
+  case $FLAG in
+    # Show action
+    -S)
+      echo "Files in $KUKA"
+      LS=`ls -a $KUKA | egrep -v "\.ORIGINS" | egrep -wv "\."`
+      echo -e "\n$LS"
+      ;;
+    # Delete action
+    -D)
+      echo "Delete action"
+      ;;
+    # Inquiry action
+    -I)
+      echo "Inquiry action"
+      ;;
+    # Move action
+    -M)
+      if [ $# -eq 2 ]
+      then
+        # Check if the file exists        
+        if [ ! -e $2 ]
+        then
+          echo -e "\nError: The file $2 does not exist."
+          exit 1
+        fi
+
+        if [ -d $2 ] 
+        then
+          echo -e "\nError: You are trying to delete a directory.\nAre you sure you want to delete it? (Y/N): \c"
+          read delete
+          if [ "$delete" = "N" ]
+          then
+            echo "Not deleting the directory $2"
+            exit 0
+          fi         
+        fi
+        
+        # Canonicalize the path
+        cd -P -- "$(dirname -- "$2")" &&
+        FULL_PATH="$(pwd -P)/$(basename -- "$2")"
+
+        # Save the name and the canonicalized path of the file
+        F_NAME=`basename $FULL_PATH`
+        F_DIR=`dirname $FULL_PATH`
+
+        # Create the new file with the information of the origin of the deleted file
+        echo "$F_DIR" > "$ORIGINS/$F_NAME"
+
+        # Move the file to the trash can
+        mv "$FULL_PATH" "$KUKA"
+      else
+        echo "Error: The script mus receive the name of the file to be deleted"
+        exit 1
+      fi
+      ;;
+    *)
+      echo "Error: The flag used is not valid in this script !!!"
+      exit 1
+      ;;
+  esac
+else
+  echo "Error: The script must receive at least one parameter."
+  exit 1
+fi
