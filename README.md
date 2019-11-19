@@ -9,13 +9,13 @@ With the `-S` flag, the erase program will display the content of the trash can.
   erase -S
 ```
 
-* __Delete action (Work in progress)__.
+* __Delete action__.
 With the `-D` flag, the erase program deletes the files temporaly stored in the trash can. Before to proceed, the program asks for the user to be sure to empty the trash can.
 ```bash
   erase -D
 ```
 
-* __Inquire action (Work in progress)__.
+* __Inquire action__.
 With the `-I` flag, the program inquires, for each file in the trash can, if the user actually wants to delete the file.
 ```bash
   erase -I
@@ -26,6 +26,7 @@ With the `-M` flag, the erase program moves the file received as a parameter to 
 ```bash
   erase -M /foo/bar.txt
 ```
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
