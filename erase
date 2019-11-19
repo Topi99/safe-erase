@@ -16,21 +16,44 @@ then
   fi
 
   FLAG="$1"
+  LS=`ls -a $KUKA | egrep -v "\.ORIGINS" | egrep -wv "\."`
 
   case $FLAG in
     # Show action
     -S)
       echo "Files in $KUKA"
-      LS=`ls -a $KUKA | egrep -v "\.ORIGINS" | egrep -wv "\."`
       echo -e "\n$LS"
       ;;
     # Delete action
     -D)
-      echo "Delete action"
+      echo -e "Do you really want to delete all the files in the trash can (Y/N)? \c"
+      read ans
+      echo ""
+
+      if [ "$ans" = "Y" ]
+      then
+        for file in $LS
+        do
+          echo "Deleting $KUKA/$file"
+          rm "$KUKA/$file"
+          rm "$ORIGINS/$file"
+        done
+      fi
       ;;
     # Inquiry action
     -I)
-      echo "Inquiry action"
+      for file in $LS
+      do
+        echo -e "\nDo you really want to delete the file \"$file\" (Y/N)? \c"
+        read ans
+        
+        if [ "$ans" = "Y" ]
+        then
+          echo "Deleting $KUKA/$file"
+          rm "$KUKA/$file"
+          rm "$ORIGINS/$file"
+        fi
+      done
       ;;
     # Move action
     -M)
