@@ -83,7 +83,7 @@ then
         fi
         
         # Canonicalize the path
-        FULL_PATH=`perl -e "use Cwd realpath; print realpath(\"file.txt\");"`
+        FULL_PATH=`perl -e "use Cwd realpath; print realpath(\"$2\");"`
 
         # Save the name and the canonicalized path of the file
         F_NAME=`basename $FULL_PATH`
