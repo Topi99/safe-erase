@@ -16,17 +16,18 @@ then
   fi
 
   FLAG="$1"
-  LS=`ls -a $KUKA | egrep -v "\.ORIGINS" | egrep -wv "\."`
+  LS=`ls -a $KUKA | egrep -v "\.ORIGINS"`
 
   case $FLAG in
     # Show action
     -S)
       echo "Files in $KUKA"
-      echo -e "\n$LS"
+      echo ""
+      echo "$LS"
       ;;
     # Delete action
     -D)
-      echo -e "Do you really want to delete all the files in the trash can (Y/N)? \c"
+      echo "Do you really want to delete all the files in the trash can (Y/N)? \c"
       read ans
       echo ""
 
@@ -44,7 +45,8 @@ then
     -I)
       for file in $LS
       do
-        echo -e "\nDo you really want to delete the file \"$file\" (Y/N)? \c"
+        echo ""
+        echo "Do you really want to delete the file \"$file\" (Y/N)? \c"
         read ans
         
         if [ "$ans" = "Y" ]
@@ -62,13 +64,16 @@ then
         # Check if the file exists        
         if [ ! -e $2 ]
         then
-          echo -e "\nError: The file $2 does not exist."
+          echo ""
+          echo "Error: The file $2 does not exist."
           exit 1
         fi
 
         if [ -d $2 ] 
         then
-          echo -e "\nError: You are trying to delete a directory.\nAre you sure you want to delete it? (Y/N): \c"
+          echo ""
+          echo "Error: You are trying to delete a directory."
+          echo "Are you sure you want to delete it? (Y/N): \c"
           read delete
           if [ "$delete" = "N" ]
           then
