@@ -83,8 +83,7 @@ then
         fi
         
         # Canonicalize the path
-        cd -P -- "$(dirname -- "$2")" &&
-        FULL_PATH="$(pwd -P)/$(basename -- "$2")"
+        FULL_PATH=`perl -e "use Cwd realpath; print realpath(\"file.txt\");"`
 
         # Save the name and the canonicalized path of the file
         F_NAME=`basename $FULL_PATH`
