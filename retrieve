@@ -1,0 +1,64 @@
+#!/usr/bin/ksh
+
+if [ $# -gt 0 ]
+then
+  FLAG="$1"
+
+  case $FLAG in
+    -F)
+      if [ $# -eq 2 ]
+      then
+        # El archivo existe?
+        if [ ! -e $HOME/.Kuka/.ORIGINS/$2 ]
+        then
+          echo "\nError: The file $2 does not exist."
+          exit 1
+        fi
+
+        direccion=`cat $HOME/.Kuka/.ORIGINS/$2 | tr -s '/' '\n'`
+        ruta=''
+
+        for dir in $direccion
+        do
+          ruta="$ruta/$dir"
+          if [ ! -d $ruta ]
+          then
+            mkdir $ruta
+          fi
+        done
+        mv $HOME/.Kuka/$2 "$ruta/."
+        rm "$HOME/.Kuka/.ORIGINS/$2"
+        echo "\"$2\" retrieved to \"$ruta\""
+      else
+        echo "Error: The script mus receive the name of the file to be deleted"
+        exit 1
+      fi
+      ;;
+    -A)
+      for linea in `ls -a $HOME/.Kuka | egrep -v '^\.$' | egrep -v '^\.\.$' | egrep -v '.ORIGINS'`
+      do
+        direccion=`cat $HOME/.Kuka/.ORIGINS/$linea | tr -s '/' '\n'`
+        ruta=''
+
+        for dir in $direccion
+        do
+          ruta="$ruta/$dir"
+          if [ ! -d $ruta ]
+          then
+            mkdir $ruta
+          fi
+        done
+        mv $HOME/.Kuka/$linea "$ruta/."
+        rm "$HOME/.Kuka/.ORIGINS/$linea"
+        echo "\"$linea\" retrieved to \"$ruta\""
+      done
+      ;;
+    *)
+      echo "Error: The flag used is not valid in this script!!!"
+      exit 1
+      ;;
+  esac
+else
+  echo "Error: The script must receive at least one parameter."
+  exit 1
+fi
