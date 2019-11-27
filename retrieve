@@ -15,10 +15,11 @@ then
           exit 1
         fi
 
-        direccion=`cat $HOME/.Kuka/.ORIGINS/$2 | tr -s '/' '\n'`
+        direccion=`cat $HOME/.Kuka/.ORIGINS/$2`
+	direccion=`dirname $direccion | tr -s '/' '\n'`
         ruta=''
-
-        for dir in $direccion
+        # echo $direccion
+	for dir in $direccion
         do
           ruta="$ruta/$dir"
           if [ ! -d $ruta ]
@@ -26,18 +27,18 @@ then
             mkdir $ruta
           fi
         done
-        mv $HOME/.Kuka/$2 "$ruta/."
-        rm "$HOME/.Kuka/.ORIGINS/$2"
-        echo "\"$2\" retrieved to \"$ruta\""
+        mv $HOME/.Kuka/$2 $ruta/.
+        rm $HOME/.Kuka/.ORIGINS/$2
       else
         echo "Error: The script mus receive the name of the file to be deleted"
         exit 1
       fi
       ;;
     -A)
-      for linea in `ls -a $HOME/.Kuka | egrep -v '^\.$' | egrep -v '^\.\.$' | egrep -v '.ORIGINS'`
+      for linea in `ls -a $HOME/.Kuka | egrep -v '^\.$' | egrep -v '^\.\.$' | egrep -v 'ORIGINS'`
       do
-        direccion=`cat $HOME/.Kuka/.ORIGINS/$linea | tr -s '/' '\n'`
+        direccion=`cat $HOME/.Kuka/.ORIGINS/$linea`
+	direccion=`dirname $direccion | tr -s '/' '\n'`
         ruta=''
 
         for dir in $direccion
@@ -48,9 +49,8 @@ then
             mkdir $ruta
           fi
         done
-        mv $HOME/.Kuka/$linea "$ruta/."
-        rm "$HOME/.Kuka/.ORIGINS/$linea"
-        echo "\"$linea\" retrieved to \"$ruta\""
+        mv $HOME/.Kuka/$linea $ruta/.
+        rm $HOME/.Kuka/.ORIGINS/$linea
       done
       ;;
     *)
@@ -62,3 +62,4 @@ else
   echo "Error: The script must receive at least one parameter."
   exit 1
 fi
+

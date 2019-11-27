@@ -83,17 +83,18 @@ then
         fi
         
         # Canonicalize the path
-        FULL_PATH=`perl -e "use Cwd realpath; print realpath(\"$2\");"`
-
+        # FULL_PATH=`perl -e "use Cwd abs_path; print abs_path(\"$2\");"`
+	DIR_FILE=`dirname $2`
+	ABS_PATH=`cd -P $DIR_FILE && pwd`
         # Save the name and the canonicalized path of the file
-        F_NAME=`basename $FULL_PATH`
-        F_DIR=`dirname $FULL_PATH`
+        F_NAME=`basename $2`
+        # F_DIR=`dirname $FULL_PATH`
 
         # Create the new file with the information of the origin of the deleted file
-        echo "$F_DIR" > "$ORIGINS/$F_NAME"
+        echo "$ABS_PATH/$F_NAME" > "$ORIGINS/$F_NAME"
 
         # Move the file to the trash can
-        mv "$FULL_PATH" "$KUKA"
+        mv "$2" "$KUKA"
       else
         echo "Error: The script mus receive the name of the file to be deleted"
         exit 1
