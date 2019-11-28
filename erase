@@ -16,7 +16,7 @@ then
   fi
 
   FLAG="$1"
-  LS=`ls -a $KUKA | egrep -v "\.ORIGINS"`
+  LS=`ls -a $KUKA | egrep -v "\.ORIGINS" | egrep -v "^\.$" | egrep -v "^\.\.$"`
 
   case $FLAG in
     # Show action

@@ -1,0 +1,18 @@
+#!/usr/bin/ksh
+
+mkdir TestingTree
+mkdir TestingTree/Libros TestingTree/Materias
+mkdir TestingTree/Materias/Apuntes
+mkdir TestingTree/Materias/Apuntes/AD2019
+
+touch TestingTree/Materias/Apuntes/AD2019/ExFin TestingTree/Materias/Apuntes/AD2019/ExPP TestingTree/Materias/Apuntes/AD2019/.ExSP
+touch TestingTree/ExFinR2 TestingTree/Fotos TestingTree/NotaExFin
+
+mkdir TestingTree/Materias/Examenes
+CURR=`pwd`
+
+cd TestingTree/Materias/Examenes
+ln -s ../../Fotos LinkP
+ln -s ../Apuntes/AD2019/ExFin LinkEx
+
+cd $CURR
